@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "../styles.css";
+import "./styles.css";
+
 
 export default function AddMovieForm({ addMovie }) {
   const [title, setTitle] = useState("");
