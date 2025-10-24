@@ -12,13 +12,16 @@ export default function MovieCard({ movie, isWatchListed, toggleWatchList, remov
     return "rating-bad";
   };
 
+  // Decide src: external URL or local file
+  const posterSrc = movie.poster
+    ? movie.poster.startsWith("http")
+      ? movie.poster         // external URL
+      : `images/${movie.poster}` // local file
+    : "images/default.jpg";    // fallback
+
   return (
     <div className="movie-card" key={movie.id}>
-      <img
-        src={`images/${movie.image}`}
-        alt={movie.title}
-        onError={errorHandler}
-      />
+      <img src={posterSrc} alt={movie.title} onError={errorHandler} />
       <div className="movie-card-info">
         <h3 className="movie-card-title">{movie.title}</h3>
         <div>
@@ -42,7 +45,7 @@ export default function MovieCard({ movie, isWatchListed, toggleWatchList, remov
           </span>
         </label>
 
-        {/* ✅ Remove movie button */}
+        {/* Remove movie button */}
         {removeMovie && (
           <button
             onClick={() => removeMovie(movie.id)}
@@ -63,4 +66,5 @@ export default function MovieCard({ movie, isWatchListed, toggleWatchList, remov
     </div>
   );
 }
+
 
