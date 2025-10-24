@@ -1,95 +1,59 @@
-import "./App.css";
-import "./styles.css";
-import Header from "./components/Header.js";
-import Footer from "./components/Footer.js";
-import MoviesGrid from "./components/MoviesGrid.js";
-import Watchlist from "./components/Watchlist.js";
-import AddMovieForm from "./components/AddMovieForm.js";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
+import "../styles.css";
 
-function App() {
-  const [movies, setMovies] = useState([]);
-  const [watchList, setWatchList] = useState([]);
+export default function AddMovieForm({ addMovie }) {
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
+  const [year, setYear] = useState("");
+  const [genre, setGenre] = useState("");
+  const [rating, setRating] = useState("");
 
-  // ✅ Load from local JSON file (initially)
-  useEffect(() => {
-    fetch("movies.json")
-      .then((response) => response.json())
-      .then((data) => setMovies(data))
-      .catch((error) => console.error("Error loading movies:", error));
-  }, []);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!title.trim()) return;
 
-  // ✅ Add new movie
-  const addMovie = (newMovie) => {
-    const movieWithId = { id: Date.now(), ...newMovie };
-    setMovies((prev) => [...prev, movieWithId]);
-  };
+    addMovie({
+      id: Date.now(),
+      title,
+      image,
+      year,
+      genre,
+      rating: rating ? parseFloat(rating) : 0
+    });
 
-  // ✅ Remove movie
-  const removeMovie = (id) => {
-    setMovies((prev) => prev.filter((m) => m.id !== id));
-    setWatchList((prev) => prev.filter((wid) => wid !== id));
-  };
-
-  // ✅ Toggle add/remove from watchlist
-  const toggleWatchList = (movieId) => {
-    setWatchList((prev) =>
-      prev.includes(movieId)
-        ? prev.filter((id) => id !== movieId)
-        : [...prev, movieId]
-    );
+    setTitle(""); setImage(""); setYear(""); setGenre(""); setRating("");
+    alert("🎬 Movie added successfully!");
   };
 
   return (
-    <div className="App">
-      <div className="container">
-        <Header />
-
-        <Router>
-          <nav>
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/watchlist">WatchList</Link></li>
-              <li><Link to="/add">Add Movie</Link></li>
-            </ul>
-          </nav>
-
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <MoviesGrid
-                  watchList={watchList}
-                  movies={movies}
-                  toggleWatchList={toggleWatchList}
-                  removeMovie={removeMovie}
-                />
-              }
-            />
-            <Route
-              path="/watchlist"
-              element={
-                <Watchlist
-                  watchList={watchList}
-                  movies={movies}
-                  toggleWatchList={toggleWatchList}
-                />
-              }
-            />
-            <Route
-              path="/add"
-              element={<AddMovieForm addMovie={addMovie} />}
-            />
-          </Routes>
-        </Router>
-      </div>
-
-      <Footer />
+    <div className="add-movie-form">
+      <h2>Add New Movie</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-row">
+          <label>Title:</label>
+          <input type="text" placeholder="Movie Title" value={title} onChange={(e)=>setTitle(e.target.value)} />
+        </div>
+        <div className="form-row">
+          <label>Poster Filename:</label>
+          <input type="text" placeholder="image.jpg" value={image} onChange={(e)=>setImage(e.target.value)} />
+        </div>
+        <div className="form-row">
+          <label>Year:</label>
+          <input type="text" placeholder="2025" value={year} onChange={(e)=>setYear(e.target.value)} />
+        </div>
+        <div className="form-row">
+          <label>Genre:</label>
+          <input type="text" placeholder="Drama, Horror..." value={genre} onChange={(e)=>setGenre(e.target.value)} />
+        </div>
+        <div className="form-row">
+          <label>Rating:</label>
+          <input type="number" placeholder="0-10" value={rating} onChange={(e)=>setRating(e.target.value)} />
+        </div>
+        <button type="submit">Add Movie</button>
+      </form>
     </div>
   );
 }
 
-export default App;
 
 
