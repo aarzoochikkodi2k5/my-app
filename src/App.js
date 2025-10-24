@@ -1,3 +1,6 @@
+import "./App.css";      // default React App styles
+import "./styles.css";   // your custom styles
+
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Header from "./components/Header";
