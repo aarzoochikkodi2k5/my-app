@@ -8,14 +8,14 @@ export default function MovieCard({ movie, isWatchListed, toggleWatchList, remov
 
   const getRating = (rating) => {
     if (rating >= 8) return "rating-good";
-    else if (rating >= 5 && rating < 8) return "rating-ok";
+    else if (rating >= 5) return "rating-ok";
     return "rating-bad";
   };
 
   return (
     <div className="movie-card" key={movie.id}>
       <img
-        src={images/${movie.image}}
+        src={`images/${movie.image}`}
         alt={movie.title}
         onError={errorHandler}
       />
@@ -23,7 +23,7 @@ export default function MovieCard({ movie, isWatchListed, toggleWatchList, remov
         <h3 className="movie-card-title">{movie.title}</h3>
         <div>
           <span className="movie-card-genre">{movie.genre}</span>
-          <span className={movie-card-rating ${getRating(movie.rating)}}>
+          <span className={`movie-card-rating ${getRating(movie.rating)}`}>
             {movie.rating}
           </span>
         </div>
@@ -53,7 +53,7 @@ export default function MovieCard({ movie, isWatchListed, toggleWatchList, remov
               border: "none",
               padding: "5px 10px",
               borderRadius: "5px",
-              cursor: "pointer"
+              cursor: "pointer",
             }}
           >
             🗑️ Remove Movie
@@ -63,5 +63,3 @@ export default function MovieCard({ movie, isWatchListed, toggleWatchList, remov
     </div>
   );
 }
-
-
