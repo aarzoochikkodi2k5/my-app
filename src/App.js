@@ -69,7 +69,10 @@ function App() {
               />
             }
           />
-          <Route path="/add" element={<AddMovieForm addMovie={addMovie} />} />
+          <Route
+            path="/add"
+            element={<AddMovieForm addMovie={addMovie} />}
+          />
         </Routes>
       </Router>
       <Footer />
@@ -78,6 +81,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
