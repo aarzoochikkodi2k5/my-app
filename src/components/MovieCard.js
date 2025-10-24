@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles.css";
 
-export default function MovieCard({ movie, isWatchListed, toggleWatchList }) {
+export default function MovieCard({ movie, isWatchListed, toggleWatchList, removeMovie }) {
   const errorHandler = (e) => {
     e.target.src = "images/default.jpg";
   };
@@ -9,7 +9,6 @@ export default function MovieCard({ movie, isWatchListed, toggleWatchList }) {
   const getRating = (rating) => {
     if (rating >= 8) return "rating-good";
     else if (rating >= 5 && rating < 8) return "rating-ok";
-
     return "rating-bad";
   };
 
@@ -28,20 +27,40 @@ export default function MovieCard({ movie, isWatchListed, toggleWatchList }) {
             {movie.rating}
           </span>
         </div>
+
+        {/* Watchlist toggle */}
         <label className="switch">
           <input
             type="checkbox"
             checked={isWatchListed}
             onChange={() => toggleWatchList(movie.id)}
-          ></input>
-
+          />
           <span className="slider">
             <span className="slider-text">
               {isWatchListed ? "In WatchList" : "Add to WatchList"}
             </span>
           </span>
         </label>
+
+        {/* ✅ Remove movie button */}
+        {removeMovie && (
+          <button
+            onClick={() => removeMovie(movie.id)}
+            style={{
+              marginTop: "10px",
+              background: "red",
+              color: "white",
+              border: "none",
+              padding: "5px 10px",
+              borderRadius: "5px",
+              cursor: "pointer"
+            }}
+          >
+            🗑️ Remove Movie
+          </button>
+        )}
       </div>
     </div>
   );
 }
+
