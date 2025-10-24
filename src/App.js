@@ -7,6 +7,8 @@ import Watchlist from "./components/Watchlist.js";
 import AddMovieForm from "./components/AddMovieForm.js";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import AddMovieForm from "./components/AddMovieForm.js";
+
 
 function App() {
   const [movies, setMovies] = useState([]);
