@@ -7,19 +7,30 @@ import Watchlist from "./components/Watchlist.js";
 import AddMovieForm from "./components/AddMovieForm.js";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import AddMovieForm from "./components/AddMovieForm.js";
-
 
 function App() {
   const [movies, setMovies] = useState([]);
   const [watchList, setWatchList] = useState([]);
 
-  // Load from local file (initially)
+  // ✅ Load from local JSON file (initially)
   useEffect(() => {
     fetch("movies.json")
       .then((response) => response.json())
-      .then((data) => setMovies(data));
+      .then((data) => setMovies(data))
+      .catch((error) => console.error("Error loading movies:", error));
   }, []);
+
+  // ✅ Add new movie
+  const addMovie = (newMovie) => {
+    const movieWithId = { id: Date.now(), ...newMovie };
+    setMovies((prev) => [...prev, movieWithId]);
+  };
+
+  // ✅ Remove movie
+  const removeMovie = (id) => {
+    setMovies((prev) => prev.filter((m) => m.id !== id));
+    setWatchList((prev) => prev.filter((wid) => wid !== id));
+  };
 
   // ✅ Toggle add/remove from watchlist
   const toggleWatchList = (movieId) => {
@@ -28,18 +39,6 @@ function App() {
         ? prev.filter((id) => id !== movieId)
         : [...prev, movieId]
     );
-  };
-
-  // ✅ Add new movie
-  const addMovie = (newMovie) => {
-    const movieWithId = { id: Date.now(), ...newMovie };
-    setMovies([...movies, movieWithId]);
-  };
-
-  // ✅ Remove movie
-  const removeMovie = (id) => {
-    setMovies(movies.filter((m) => m.id !== id));
-    setWatchList(watchList.filter((wid) => wid !== id));
   };
 
   return (
@@ -85,10 +84,12 @@ function App() {
           </Routes>
         </Router>
       </div>
+
       <Footer />
     </div>
   );
 }
 
 export default App;
+
 
